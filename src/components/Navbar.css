@@ -36,6 +36,40 @@
 .nav-links a.active::after { width: 100%; }
 .nav-links a.active { color: var(--rose-500); }
 
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: gray;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 220px;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px 20px;
+  backdrop-filter: blur(20px);
+    padding: 20px;
+    gap: 15px;
+
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+}
+
 @media (max-width: 900px) {
   .navbar { padding: 0 24px; }
   .nav-links { gap: 20px; }

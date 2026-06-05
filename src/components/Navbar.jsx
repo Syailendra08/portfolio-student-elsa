@@ -11,6 +11,7 @@ const navItems = [
 
 export default function Navbar({ activePage, onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // tambah ini
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -23,13 +24,26 @@ export default function Navbar({ activePage, onNavigate }) {
       <div className="nav-logo" onClick={() => onNavigate("home")}>
         Elsa<span>.</span>
       </div>
-      <ul className="nav-links">
+
+      {/* Tambahan burger */}
+      <button
+        className="hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        ☰
+      </button>
+
+      <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
         {navItems.map((item) => (
           <li key={item.id}>
             <a
               href="#"
               className={activePage === item.id ? "active" : ""}
-              onClick={(e) => { e.preventDefault(); onNavigate(item.id); }}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate(item.id);
+                setMenuOpen(false); // tutup menu setelah klik
+              }}
             >
               {item.label}
             </a>
