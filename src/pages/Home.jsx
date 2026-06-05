@@ -29,7 +29,7 @@ export default function Home({ onNavigate }) {
       {/* Hero */}
       <div className="hero container">
         <div className="hero-text">
-          <span className="hero-eyebrow">✦ Culinary Arts Portfolio</span>
+          <span className="hero-eyebrow">✦ Elsa's Culinary Portfolio</span>
           <h1 className="hero-title">
             Cooking is<br />my <em>love</em><br />language
           </h1>
