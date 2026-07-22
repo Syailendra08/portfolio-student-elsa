@@ -19,6 +19,7 @@ html { scroll-behavior: smooth; }
   --charcoal: #2a1f1d;
   --mist:     #f5ecea;
   --white:    #ffffff;
+  --nav-bg:   rgba(253,248,245,.88);
 
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'DM Sans', sans-serif;
@@ -30,6 +31,24 @@ html { scroll-behavior: smooth; }
   --shadow: 0 8px 32px rgba(60,30,25,.08);
   --shadow-lg: 0 20px 60px rgba(60,30,25,.12);
 }
+
+[data-theme="dark"] {
+  --cream:    #161211;
+  --white:    #221b19;
+  --parchment:#2a211e;
+  --blush:    #322522;
+  --mocha:    #caa99e;
+  --bark:     #f7ede8;
+  --charcoal: #e6dad5;
+  --mist:     #261f1d;
+  --rose-50:  #2d181c;
+  --rose-100: #421c25;
+  --rose-200: #6b2836;
+  --nav-bg:   rgba(22,18,17,.88);
+  --shadow:   0 8px 32px rgba(0,0,0,.45);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.65);
+}
+
 
 body {
   font-family: var(--font-body);

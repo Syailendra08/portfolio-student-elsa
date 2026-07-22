@@ -18,12 +18,21 @@ const pages = {
 };
 
 export default function App() {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
   const [activePage, setActivePage] = useState(() => {
     if (window.location.hash === "#admin" || window.location.search.includes("admin")) {
       return "admin";
     }
     return "home";
   });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -35,6 +44,10 @@ export default function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
+
   function navigate(pageId) {
     setActivePage(pageId);
     window.location.hash = pageId === "admin" ? "admin" : "";
@@ -45,9 +58,15 @@ export default function App() {
 
   return (
     <>
-      <Navbar activePage={activePage} onNavigate={navigate} />
+      <Navbar 
+        activePage={activePage} 
+        onNavigate={navigate} 
+        theme={theme} 
+        onToggleTheme={toggleTheme} 
+      />
       <PageComponent onNavigate={navigate} />
     </>
   );
 }
+
 

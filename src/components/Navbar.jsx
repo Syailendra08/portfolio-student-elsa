@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiSun, FiMoon } from "react-icons/fi";
 import "./Navbar.css";
 
 const navItems = [
@@ -9,9 +10,9 @@ const navItems = [
   { id: "contact",  label: "Contact Me" },
 ];
 
-export default function Navbar({ activePage, onNavigate }) {
+export default function Navbar({ activePage, onNavigate, theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // tambah ini
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -25,13 +26,23 @@ export default function Navbar({ activePage, onNavigate }) {
         Elsa<span>.</span>
       </div>
 
-      {/* Tambahan burger */}
-      <button
-        className="hamburger"
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        ☰
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <button 
+          className="theme-toggle-btn"
+          onClick={onToggleTheme}
+          aria-label="Toggle theme"
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        >
+          {theme === 'dark' ? <FiSun size={17} /> : <FiMoon size={17} />}
+        </button>
+
+        <button
+          className="hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
 
       <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
         {navItems.map((item) => (
@@ -42,7 +53,7 @@ export default function Navbar({ activePage, onNavigate }) {
               onClick={(e) => {
                 e.preventDefault();
                 onNavigate(item.id);
-                setMenuOpen(false); // tutup menu setelah klik
+                setMenuOpen(false);
               }}
             >
               {item.label}
