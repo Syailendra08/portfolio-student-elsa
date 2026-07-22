@@ -1,23 +1,26 @@
-import { useState } from "react";
-import { cookingProjects } from "../data/cookingData";
+import { useState, useEffect } from "react";
+import { getProjects } from "../lib/supabase";
+import { cookingProjects as fallbackProjects } from "../data/cookingData";
 import "./Projects.css";
 
-const categories = ["All", ...new Set(cookingProjects.map((p) => p.category))];
+const categories = ["All", "Pastry", "Hot Kitchen", "Cold Kitchen", "Drinks"];
 
 function ProjectCard({ item }) {
+  const tagsList = Array.isArray(item.tags) ? item.tags : [];
+
   return (
     <div className="project-card">
       <div className="project-img">
         {item.image
           ? <img src={item.image} alt={item.title} loading="lazy" />
-          : <span style={{ position: "relative", zIndex: 1 }}>{item.emoji}</span>}
+          : <span style={{ position: "relative", zIndex: 1 }}>{item.emoji || "🍳"}</span>}
         <span className="project-cat-badge">{item.category}</span>
       </div>
       <div className="project-body">
         <div className="project-title">{item.title}</div>
         <div className="project-desc">{item.description}</div>
         <div className="project-tags">
-          {item.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
+          {tagsList.map((t, idx) => <span className="tag" key={idx}>{t}</span>)}
         </div>
         <div className="project-date">📅 {item.date}</div>
       </div>
@@ -25,12 +28,26 @@ function ProjectCard({ item }) {
   );
 }
 
-export default function Projects() {
+export default function Projects({ onNavigate }) {
+  const [projectsList, setProjectsList] = useState(fallbackProjects);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true);
+      const data = await getProjects();
+      if (data && data.length > 0) {
+        setProjectsList(data);
+      }
+      setLoading(false);
+    }
+    loadData();
+  }, []);
 
   const filtered = activeFilter === "All"
-    ? cookingProjects
-    : cookingProjects.filter((p) => p.category === activeFilter);
+    ? projectsList
+    : projectsList.filter((p) => p.category === activeFilter);
 
   return (
     <div className="page-wrapper">
@@ -62,15 +79,26 @@ export default function Projects() {
         </div>
 
         <p className="projects-count">
-          Showing {filtered.length} of {cookingProjects.length} dishes
+          Showing {filtered.length} of {projectsList.length} dishes
         </p>
       </div>
 
-     <footer className="site-footer">
-        Developed with <span>♥</span> by <a href="https://portofolio-react-syailendra.vercel.app/" target="_blank" rel="noopener noreferrer">
+      <footer className="site-footer">
+        Developed with <span>♥</span> by{" "}
+        <a href="https://portofolio-react-syailendra.vercel.app/" target="_blank" rel="noopener noreferrer">
           Syailendra
-        </a> · All rights reserved © 2025
+        </a>{" "}
+        · All rights reserved © 2025 ·{" "}
+        <a 
+          href="#admin" 
+          onClick={(e) => { e.preventDefault(); if (onNavigate) onNavigate("admin"); }} 
+          style={{ opacity: 0.5, fontSize: '0.75rem', textDecoration: 'none' }}
+          title="Admin Panel"
+        >
+          🔒 Admin
+        </a>
       </footer>
     </div>
   );
 }
+
